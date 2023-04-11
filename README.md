@@ -1,6 +1,6 @@
 # copyappfresh
 
-A new Flutter project.
+Test project for skills about layout.
 
 ## Getting Started
 
