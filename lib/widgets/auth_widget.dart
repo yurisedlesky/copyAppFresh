@@ -8,6 +8,13 @@ class AuthWidget extends StatefulWidget {
 }
 
 class _AuthWidgetState extends State<AuthWidget> {
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
