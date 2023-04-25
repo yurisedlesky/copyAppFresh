@@ -1,36 +1,81 @@
 import 'package:flutter/material.dart';
 
-class LaunchWidget extends StatelessWidget {
-  LaunchWidget({Key? key}) : super(key: key);
+bool isMove = true;
 
+class LaunchWidget extends StatefulWidget {
+  const LaunchWidget({Key? key}) : super(key: key);
+
+  @override
+  State<LaunchWidget> createState() => _LaunchWidgetState();
+}
+
+class _LaunchWidgetState extends State<LaunchWidget> {
   final HelloWords _helloWords = HelloWords();
 
   final DateTime _time = DateTime.now();
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+       setState(() {
+         isMove = !isMove;
+       });
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
+      //color: Colors.teal,
       constraints: const BoxConstraints.expand(),
       decoration: const BoxDecoration(
-        image: DecorationImage(
-            image: AssetImage("assets/image2.png"),
-            fit: BoxFit.cover),
+         image: DecorationImage(
+             image: AssetImage("assets/image2.png"),
+             fit: BoxFit.cover),
       ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            LaunchTextWidget(launchText: _helloWords.getHelloKz(_helloWords._getIndex(_time)) ),
-            const SizedBox(height: 30,),
-            LaunchTextWidget(launchText: _helloWords.getHelloRu(_helloWords._getIndex(_time)) ),
-            const SizedBox(height: 30,),
-            LaunchTextWidget(launchText: _helloWords.getHelloEn(_helloWords._getIndex(_time)) ),
-          ],
-        ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+           Container(
+            height: MediaQuery.of(context).size.height/3,
+              //color: Colors.white38,
+              width: double.infinity,
+              child: const AnimatedLogo()),
+          Expanded(
+            //padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                LaunchTextWidget(launchText: _helloWords.getHelloKz(_helloWords._getIndex(_time)) ),
+                const SizedBox(height: 30,),
+                LaunchTextWidget(launchText: _helloWords.getHelloRu(_helloWords._getIndex(_time)) ),
+                const SizedBox(height: 30,),
+                LaunchTextWidget(launchText: _helloWords.getHelloEn(_helloWords._getIndex(_time)) ),
+                const SizedBox(height: 30,),
+              ],
+            ),
+          ),
+        ],
       ),
     );
+  }
+}
+
+class AnimatedLogo extends StatelessWidget {
+  const AnimatedLogo({Key? key}) : super(key: key);
+
+  @override //Image.asset("assets/logo.png"),
+  Widget build(BuildContext context) {
+    return  AnimatedAlign(
+          alignment: isMove ? Alignment.topLeft : Alignment.bottomCenter,
+          duration: const Duration(seconds: 2),
+          heightFactor: 0.5,
+          widthFactor: 0.5,
+          curve: Curves.fastOutSlowIn,
+          child: Image.asset("assets/LogoAF.png"),
+          );
   }
 }
 
@@ -70,7 +115,7 @@ class LaunchTextWidget extends StatelessWidget {
         fontSize: 34,
         fontFamily: 'Brushtype',
         letterSpacing: 4.0,
-        color: Colors.lightGreenAccent,
+        color: Colors.white,
         decoration:
         TextDecoration.none,
         shadows: <Shadow>[
